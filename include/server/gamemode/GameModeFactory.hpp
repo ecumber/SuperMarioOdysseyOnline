@@ -2,6 +2,7 @@
 
 #include "al/factory/Factory.h"
 #include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "server/gamemode/GameModeBase.hpp"
 #include "server/HideAndSeekMode.hpp"
 #include "server/TagMode.hpp"

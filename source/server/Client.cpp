@@ -12,6 +12,7 @@
 #include "heap/seadHeapMgr.h"
 #include "helpers.hpp"
 #include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "logger.hpp"
 #include "math/seadVector.h"
 #include "nn/err.h"
@@ -29,6 +30,8 @@
 #include "server/gamemode/GameModeFactory.hpp"
 #include "server/HideAndSeekConfigMenu.hpp"
 #include "server/HideAndSeekMode.hpp"
+//#include "server/TagMenu.hpp"
+#include "server/TagMode.hpp"
 
 Client* Client::sInstance;
 

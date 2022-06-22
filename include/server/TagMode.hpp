@@ -33,7 +33,7 @@ class TagMode : public GameModeBase {
     private:
         float mInvulnTime = 0.0f;
         GameModeTimer* mModeTimer = nullptr;
-        HideAndSeekIcon *mModeLayout = nullptr;
+        TagIcon *mModeLayout = nullptr;
         TagInfo* mInfo = nullptr;
         al::CameraTicket *mTicket = nullptr;
 

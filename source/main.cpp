@@ -18,10 +18,12 @@
 #include "game/StageScene/StageScene.h"
 #include "helpers.hpp"
 #include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "logger.hpp"
 #include "rs/util.hpp"
 #include "server/gamemode/GameModeBase.hpp"
 #include "server/HideAndSeekMode.hpp"
+#include "server/TagMode.hpp"
 
 static int pInfSendTimer = 0;
 static int gameInfSendTimer = 0;

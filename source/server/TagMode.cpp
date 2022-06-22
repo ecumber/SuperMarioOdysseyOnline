@@ -7,7 +7,7 @@
 #include "game/Layouts/CoinCounter.h"
 #include "game/Layouts/MapMini.h"
 #include "game/Player/PlayerActorHakoniwa.h"
-#include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "logger.hpp"
 #include "rs/util.hpp"
 #include "server/gamemode/GameModeBase.hpp"
@@ -39,7 +39,7 @@ void TagMode::init(const GameModeInitInfo& info) {
         mModeTimer = new GameModeTimer();
     }
 
-    mModeLayout = new HideAndSeekIcon("HideAndSeekIcon", *info.mLayoutInitInfo);
+    mModeLayout = new TagIcon("TagIcon", *info.mLayoutInitInfo);
 
     mModeLayout->showSeeking();
 
@@ -129,12 +129,14 @@ void TagMode::update() {
                         if(pupDist < 200.f && mainPlayer->mDimKeeper->is2DModel == curInfo->is2D) {
                             if(!PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
                                 
-                                GameDataFunction::killPlayer(GameDataHolderAccessor(this));
-                                mainPlayer->startDemoPuppetable();
+                                //GameDataFunction::killPlayer(GameDataHolderAccessor(this));
+                                //mainPlayer->startDemoPuppetable();
                                 al::setVelocityZero(mainPlayer);
-                                rs::faceToCamera(mainPlayer);
-                                mainPlayer->mPlayerAnimator->endSubAnim();
-                                mainPlayer->mPlayerAnimator->startAnimDead();
+                                //rs::faceToCamera(mainPlayer);
+                                //mainPlayer->mPlayerAnimator->endSubAnim();
+                                mainPlayer->mPlayerAnimator->startAnim("DamageLand");
+
+                                
 
                                 mInfo->mIsPlayerIt = true;
                                 mModeTimer->disableTimer();
@@ -156,7 +158,47 @@ void TagMode::update() {
             }
             
         }else {
-            mInvulnTime += Time::deltaTime;
+            if (mainPlayer) {
+                for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
+                {
+                    PuppetInfo *curInfo = Client::getPuppetInfo(i);
+
+                    if(curInfo->isConnected && curInfo->isInSameStage && curInfo->isIt) { 
+
+                        float pupDist = al::calcDistance(mainPlayer, curInfo->playerPos); // TODO: remove distance calculations and use hit sensors to determine this
+
+                        if(pupDist < 200.f && mainPlayer->mDimKeeper->is2DModel == curInfo->is2D) {
+                            if(!PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
+                                
+                                //GameDataFunction::killPlayer(GameDataHolderAccessor(this));
+                                //mainPlayer->startDemoPuppetable();
+                                //al::setVelocityZero(mainPlayer);
+                                //rs::faceToCamera(mainPlayer);
+                                //mainPlayer->mPlayerAnimator->endSubAnim();
+                                mainPlayer->mPlayerAnimator->startAnim("Punch");
+
+                                
+
+                                mInfo->mIsPlayerIt = false;
+                                mInvulnTime += Time::deltaTime;
+                                mModeTimer->disableTimer();
+                                mModeLayout->showSeeking();
+                                
+                                Client::sendTagInfPacket();
+                            }
+                        } else if (PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
+
+                            mInfo->mIsPlayerIt = false;
+                            mModeTimer->disableTimer();
+                            mModeLayout->showSeeking();
+
+                            Client::sendTagInfPacket();
+                            
+                        }
+                    }
+                }
+            }
+
         }
 
         mModeTimer->updateTimer();

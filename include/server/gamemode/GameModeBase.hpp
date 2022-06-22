@@ -10,6 +10,7 @@
 #include "game/GameData/GameDataHolder.h"
 #include "game/StageScene/StageScene.h"
 #include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "prim/seadSafeString.h"
 #include "server/gamemode/GameModeConfigMenu.hpp"
 

@@ -32,6 +32,7 @@
 #include "game/GameData/GameDataFunction.h"
 
 #include "layouts/HideAndSeekIcon.h"
+#include "layouts/TagIcon.h"
 #include "rs/util.hpp"
 
 #include "sead/heap/seadDisposer.h"
@@ -71,6 +72,7 @@ struct UIDIndexNode {
 };
 
 class HideAndSeekIcon;
+class TagIcon;
 
 class Client {
     public:
