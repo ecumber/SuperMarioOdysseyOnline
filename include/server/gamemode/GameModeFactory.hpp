@@ -4,6 +4,7 @@
 #include "layouts/HideAndSeekIcon.h"
 #include "server/gamemode/GameModeBase.hpp"
 #include "server/HideAndSeekMode.hpp"
+#include "server/TagMode.hpp"
 
 typedef GameModeBase* (*createMode)(const char* name);
 
@@ -14,11 +15,13 @@ GameModeBase* createGameMode(const char* name)
 };
 
 __attribute((used)) constexpr al::NameToCreator<createMode> modeTable[] = {
-    {"HideAndSeek", &createGameMode<HideAndSeekMode>}
+    {"HideAndSeek", &createGameMode<HideAndSeekMode>},
+    {"Tag", &createGameMode<TagMode>}
 };
 
 constexpr const char* modeNames[] = {
-    "Hide and Seek"
+    "Hide and Seek",
+    "Tag"
 };
 
 class GameModeFactory : public al::Factory<createMode> {
