@@ -10,3 +10,4 @@ Custom Stage Builds/**
 compile_commands.json
 romfs/LayoutData/youarenotit.png
 romfs/LayoutData/youareit.png
+linkerscripts/symstemp.ld

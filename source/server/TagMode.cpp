@@ -41,7 +41,7 @@ void TagMode::init(const GameModeInitInfo& info) {
 
     mModeLayout = new TagIcon("TagIcon", *info.mLayoutInitInfo);
 
-    mModeLayout->showSeeking();
+    mModeLayout->showTagged();
 
     mModeTimer->disableTimer();
 
@@ -55,10 +55,10 @@ void TagMode::begin() {
 
     if (!mInfo->mIsPlayerIt) {
         mModeTimer->enableTimer();
-        mModeLayout->showHiding();
+        mModeLayout->showUntagged();
     } else {
         mModeTimer->disableTimer();
-        mModeLayout->showSeeking();
+        mModeLayout->showTagged();
     }
 
     CoinCounter *coinCollect = mCurScene->stageSceneLayout->mCoinCollectLyt;
@@ -140,7 +140,7 @@ void TagMode::update() {
 
                                 mInfo->mIsPlayerIt = true;
                                 mModeTimer->disableTimer();
-                                mModeLayout->showSeeking();
+                                mModeLayout->showTagged();
                                 
                                 Client::sendTagInfPacket();
                             }
@@ -148,7 +148,7 @@ void TagMode::update() {
 
                             mInfo->mIsPlayerIt = true;
                             mModeTimer->disableTimer();
-                            mModeLayout->showSeeking();
+                            mModeLayout->showTagged();
 
                             Client::sendTagInfPacket();
                             
@@ -182,7 +182,7 @@ void TagMode::update() {
                                 mInfo->mIsPlayerIt = false;
                                 mInvulnTime += Time::deltaTime;
                                 mModeTimer->disableTimer();
-                                mModeLayout->showSeeking();
+                                mModeLayout->showUntagged();
                                 
                                 Client::sendTagInfPacket();
                             }
@@ -190,7 +190,7 @@ void TagMode::update() {
 
                             mInfo->mIsPlayerIt = false;
                             mModeTimer->disableTimer();
-                            mModeLayout->showSeeking();
+                            mModeLayout->showUntagged();
 
                             Client::sendTagInfPacket();
                             
@@ -238,9 +238,9 @@ void TagMode::update() {
 
         if(!mInfo->mIsPlayerIt) {
             mInvulnTime = 0;
-            mModeLayout->showHiding();
+            mModeLayout->showUntagged();
         } else {
-            mModeLayout->showSeeking();
+            mModeLayout->showTagged();
         }
 
         Client::sendTagInfPacket();

@@ -11,6 +11,8 @@
 struct TagInfo : GameModeInfoBase {
     TagInfo() { mMode = GameMode::TAG; }
     bool mIsPlayerIt = false;
+    bool mIsUseGravity = false;
+    bool mIsUseGravityCam = false;    
     GameTime mTimeLimit;
 };
 
@@ -27,6 +29,11 @@ class TagMode : public GameModeBase {
         bool isPlayerIt() const { return mInfo->mIsPlayerIt; };
 
         void setPlayerTagState(bool state) { mInfo->mIsPlayerIt = state; }
+
+        
+        void enableGravityMode() {mInfo->mIsUseGravity = true;}
+        void disableGravityMode() { mInfo->mIsUseGravity = false; }
+        bool isUseGravity() const { return mInfo->mIsUseGravity; }
 
         void setCameraTicket(al::CameraTicket *ticket) {mTicket = ticket;}
 

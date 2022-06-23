@@ -18,8 +18,8 @@ class TagIcon : public al::LayoutActor {
         bool tryStart();
         bool tryEnd();
 
-        void showHiding();
-        void showSeeking();
+        void showUntagged();
+        void showTagged();
         
         void exeAppear();
         void exeWait();

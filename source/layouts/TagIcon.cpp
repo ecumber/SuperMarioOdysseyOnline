@@ -113,14 +113,14 @@ void TagIcon::exeEnd() {
     }
 }
 
-void TagIcon::showHiding() {
-    al::hidePane(this, "SeekingIcon");
-    al::showPane(this, "HidingIcon");
+void TagIcon::showUntagged() {
+    al::hidePane(this, "TaggedIcon");
+    al::showPane(this, "UntaggedIcon");
 }
 
-void TagIcon::showSeeking() {
-    al::hidePane(this, "HidingIcon");
-    al::showPane(this, "SeekingIcon");
+void TagIcon::showTagged() {
+    al::hidePane(this, "TaggedIcon");
+    al::showPane(this, "UntaggedIcon");
 }
 
 namespace {

@@ -92,7 +92,7 @@ Client::Client(int bufferSize) {
 
     Logger::setLogName(playerName.name);  // set Debug logger name to player name
 
-    mServerMode = GameMode::HIDEANDSEEK; // temp for testing
+    mServerMode = GameMode::TAG; // temp for testing
 
     if(!sInstance) {
         sInstance = this;
@@ -660,26 +660,44 @@ void Client::sendTagInfPacket() {
         Logger::log("Static Instance is Null!\n");
         return;
     }
+//
+    //if (sInstance->mServerMode != GameMode::HIDEANDSEEK) {
+    //    Logger::log("State is not Hide and Seek!\n");
+    //    return;
+    //}
+    //
+    if (sInstance->mServerMode = GameMode::HIDEANDSEEK) {
+        HideAndSeekMode* hsMode = (HideAndSeekMode*)sInstance->mCurMode;
+        HideAndSeekInfo* curInfo = (HideAndSeekInfo*)sInstance->mModeInfo;
 
-    if (sInstance->mServerMode != GameMode::HIDEANDSEEK) {
-        Logger::log("State is not Hide and Seek!\n");
-        return;
+        TagInf packet = TagInf();
+
+        packet.mUserID = sInstance->mUserID;
+
+        packet.isIt = hsMode->isPlayerIt();
+
+        packet.minutes = curInfo->mHidingTime.mMinutes;
+        packet.seconds = curInfo->mHidingTime.mSeconds;
+        packet.updateType = static_cast<TagUpdateType>(TagUpdateType::STATE | TagUpdateType::TIME);
+
+        sInstance->mSocket->SEND(&packet);
+    } else if (sInstance->mServerMode = GameMode::TAG) {
+        TagMode* tagMode = (TagMode*)sInstance->mCurMode;
+        TagInfo* curInfo = (TagInfo*)sInstance->mModeInfo;
+
+        //this is NOT related to the tag gamemode, it's just named that way
+        TagInf packet = TagInf();
+
+        packet.mUserID = sInstance->mUserID;
+
+        packet.isIt = tagMode->isPlayerIt();
+
+        packet.minutes = curInfo->mTimeLimit.mMinutes;
+        packet.seconds = curInfo->mTimeLimit.mSeconds;
+        packet.updateType = static_cast<TagUpdateType>(TagUpdateType::STATE | TagUpdateType::TIME);
+
+        sInstance->mSocket->SEND(&packet);
     }
-
-    HideAndSeekMode* hsMode = (HideAndSeekMode*)sInstance->mCurMode;
-    HideAndSeekInfo* curInfo = (HideAndSeekInfo*)sInstance->mModeInfo;
-
-    TagInf packet = TagInf();
-
-    packet.mUserID = sInstance->mUserID;
-
-    packet.isIt = hsMode->isPlayerIt();
-
-    packet.minutes = curInfo->mHidingTime.mMinutes;
-    packet.seconds = curInfo->mHidingTime.mSeconds;
-    packet.updateType = static_cast<TagUpdateType>(TagUpdateType::STATE | TagUpdateType::TIME);
-
-    sInstance->mSocket->SEND(&packet);
 }
 
 /**
@@ -1509,6 +1527,9 @@ GameModeConfigMenu* Client::tryCreateModeMenu() {
     switch (sInstance->mServerMode) {
     case HIDEANDSEEK: {
         return new HideAndSeekConfigMenu();
+    }
+    case TAG: {
+        return new TagConfigMenu();
     }
     default:
         return nullptr;
