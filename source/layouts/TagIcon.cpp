@@ -21,8 +21,8 @@ TagIcon::TagIcon(const char* name, const al::LayoutInitInfo& initInfo) : al::Lay
     initNerve(&nrvTagIconEnd, 0);
 
     //what do you even call these
-    al::hidePane(this, "TaggedIcon");
-    al::hidePane(this, "UntaggedIcon");
+    al::hidePane(this, "SeekingIcon");
+    al::hidePane(this, "HidingIcon");
 
     
     kill();
@@ -114,13 +114,13 @@ void TagIcon::exeEnd() {
 }
 
 void TagIcon::showUntagged() {
-    al::hidePane(this, "TaggedIcon");
-    al::showPane(this, "UntaggedIcon");
+    al::hidePane(this, "SeekingIcon");
+    al::showPane(this, "HidingIcon");
 }
 
 void TagIcon::showTagged() {
-    al::hidePane(this, "TaggedIcon");
-    al::showPane(this, "UntaggedIcon");
+    al::hidePane(this, "HidingIcon");
+    al::showPane(this, "SeekingIcon");
 }
 
 namespace {

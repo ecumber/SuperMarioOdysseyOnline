@@ -11,3 +11,9 @@ compile_commands.json
 romfs/LayoutData/youarenotit.png
 romfs/LayoutData/youareit.png
 linkerscripts/symstemp.ld
+romfs/LayoutData/tagicon/layout.lyarc
+romfs/LayoutData/tagicon/InitTagProcessor.byml
+romfs/LayoutData/tagicon/InitMainGroup.byml
+romfs/LayoutData/tagicon/InitExecutor.byml
+romfs/LayoutData/tagicon/InitDebug.byml
+romfs/LayoutData/tagicon/InitAudio.byml
