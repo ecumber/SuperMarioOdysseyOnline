@@ -110,13 +110,12 @@ void TagMode::update() {
         //if (mInfo->mIsUseGravityCam && mTicket) {
         //    al::startCamera(mCurScene, mTicket, -1);
         //}
-//
+        //
         mIsFirstFrame = false;
     }
 
     if (!mInfo->mIsPlayerIt) {
-        if (mInvulnTime >= 5) {  
-
+        //if (mInvulnTime <= 5) {  
             if (mainPlayer) {
                 for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
                 {
@@ -128,17 +127,18 @@ void TagMode::update() {
 
                         if(pupDist < 200.f && mainPlayer->mDimKeeper->is2DModel == curInfo->is2D) {
                             if(!PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
-                                
+                                //we need to put this first because it will cause an infinite loop where each player tags each other indefinitely
+                                mInvulnTime += Time::deltaTime;
+                                mInfo->mIsPlayerIt = true;
                                 //GameDataFunction::killPlayer(GameDataHolderAccessor(this));
                                 //mainPlayer->startDemoPuppetable();
                                 al::setVelocityZero(mainPlayer);
                                 //rs::faceToCamera(mainPlayer);
-                                //mainPlayer->mPlayerAnimator->endSubAnim();
+                                mainPlayer->mPlayerAnimator->endSubAnim();
                                 mainPlayer->mPlayerAnimator->startAnim("DamageLand");
 
                                 
 
-                                mInfo->mIsPlayerIt = true;
                                 mModeTimer->disableTimer();
                                 mModeLayout->showTagged();
                                 
@@ -156,51 +156,53 @@ void TagMode::update() {
                     }
                 }
             }
-            
-        }else {
-            if (mainPlayer) {
-                for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
-                {
-                    PuppetInfo *curInfo = Client::getPuppetInfo(i);
-
-                    if(curInfo->isConnected && curInfo->isInSameStage && curInfo->isIt) { 
-
-                        float pupDist = al::calcDistance(mainPlayer, curInfo->playerPos); // TODO: remove distance calculations and use hit sensors to determine this
-
-                        if(pupDist < 200.f && mainPlayer->mDimKeeper->is2DModel == curInfo->is2D) {
-                            if(!PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
-                                
-                                //GameDataFunction::killPlayer(GameDataHolderAccessor(this));
-                                //mainPlayer->startDemoPuppetable();
-                                //al::setVelocityZero(mainPlayer);
-                                //rs::faceToCamera(mainPlayer);
-                                //mainPlayer->mPlayerAnimator->endSubAnim();
-                                mainPlayer->mPlayerAnimator->startAnim("Punch");
-
-                                
-
+        //} 
+    }
+    else {
+            {
+                //if (mInvulnTime <= 5) {
+                if (mainPlayer) {
+                    for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
+                    {
+                        PuppetInfo *curInfo = Client::getPuppetInfo(i);
+    
+                        if(curInfo->isConnected && curInfo->isInSameStage && curInfo->isIt) { 
+                        
+                            float pupDist = al::calcDistance(mainPlayer, curInfo->playerPos); // TODO: remove distance calculations and use hit sensors to determine this
+    
+                            if(pupDist < 200.f && mainPlayer->mDimKeeper->is2DModel == curInfo->is2D) {
+                                if(!PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
+                                    mInvulnTime += Time::deltaTime;
+                                    mInfo->mIsPlayerIt = false;
+                                    //GameDataFunction::killPlayer(GameDataHolderAccessor(this));
+                                    //mainPlayer->startDemoPuppetable();
+                                    al::setVelocityZero(mainPlayer);
+                                    //rs::faceToCamera(mainPlayer);
+                                    mainPlayer->mPlayerAnimator->endSubAnim();
+                                    mainPlayer->mPlayerAnimator->startAnim("Punch");
+                                    
+                                    //mainPlayer->mPlayerAnimator->startAnim("Punch");
+    
+                                    //mInvulnTime += Time::deltaTime;
+                                    mModeTimer->disableTimer();
+                                    mModeLayout->showUntagged();
+                                    
+                                    Client::sendTagInfPacket();
+                                }
+                            } else if (PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
+                            
                                 mInfo->mIsPlayerIt = false;
-                                mInvulnTime += Time::deltaTime;
                                 mModeTimer->disableTimer();
                                 mModeLayout->showUntagged();
-                                
+    
                                 Client::sendTagInfPacket();
+                                
                             }
-                        } else if (PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
-
-                            mInfo->mIsPlayerIt = false;
-                            mModeTimer->disableTimer();
-                            mModeLayout->showUntagged();
-
-                            Client::sendTagInfPacket();
-                            
                         }
                     }
                 }
-            }
-
+            //}
         }
-
         mModeTimer->updateTimer();
     }
 
@@ -244,7 +246,6 @@ void TagMode::update() {
         }
 
         Client::sendTagInfPacket();
+        //mInfo->mTimeLimit = mModeTimer->getTime();
+        }  
     }
-
-    //mInfo->mHidingTime = mModeTimer->getTime();
-}

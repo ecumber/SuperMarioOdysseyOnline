@@ -94,7 +94,11 @@ void drawMainHook(HakoniwaSequence *curSequence, sead::Viewport *viewport, sead:
     gTextWriter->printf("nn::socket::GetLastErrno: 0x%x\n", Client::sInstance->mSocket->socket_errno);
     gTextWriter->printf("Packet Queue Length: %d\n", Client::sInstance->mSocket->mPacketQueue.size());
     gTextWriter->printf("Total Connected Players: %d\n", Client::getConnectCount() + 1);
-
+    TagInfo* tinf = (TagInfo*)Client::getModeInfo();
+    gTextWriter->printf("Is player it (tag): %s\n", tinf->mIsPlayerIt ? "True" : "False");
+    TagMode* tmode = Client::getMode<TagMode>();
+    gTextWriter->printf("Is invuln: %s\n", tinf->isInvuln ? "True" : "False");
+    gTextWriter->printf("Invuln Time: %f\n", tmode->getPlayerInvulnTime());
     al::Scene *curScene = curSequence->curScene;
 
     if(curScene && isInGame) {
@@ -122,7 +126,7 @@ void drawMainHook(HakoniwaSequence *curSequence, sead::Viewport *viewport, sead:
         {
         case 0:
             {
-                // PuppetActor *curPuppet = Client::getDebugPuppet();
+                PuppetActor *curPuppet = Client::getDebugPuppet();
 
                 if(curPuppet) {
 
@@ -175,7 +179,6 @@ void drawMainHook(HakoniwaSequence *curSequence, sead::Viewport *viewport, sead:
                     gTextWriter->printf("Is Current Model Clipped: %s\n",
                                         BTOC(al::isClipped(curModel)));
                     gTextWriter->printf("Is Debug Puppet Tagged: %s\n", BTOC(debugInfo->isIt));
-
                 }
             }
             break;
@@ -183,6 +186,7 @@ void drawMainHook(HakoniwaSequence *curSequence, sead::Viewport *viewport, sead:
             {  
                 al::PlayerHolder *pHolder = al::getScenePlayerHolder(curScene);
                 PlayerActorHakoniwa *p1 = pHolder->tryGetPlayer(0);
+                TagInfo tinf;
 
                 if (p1->mHackKeeper && p1->mHackKeeper->currentHackActor) {
 

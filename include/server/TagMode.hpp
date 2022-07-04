@@ -30,6 +30,8 @@ class TagMode : public GameModeBase {
 
         void setPlayerTagState(bool state) { mInfo->mIsPlayerIt = state; }
 
+        float getPlayerInvulnTime() { return mInvulnTime; }
+
         
         void enableGravityMode() {mInfo->mIsUseGravity = true;}
         void disableGravityMode() { mInfo->mIsUseGravity = false; }
