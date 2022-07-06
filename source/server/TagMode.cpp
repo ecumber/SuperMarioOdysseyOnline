@@ -115,7 +115,7 @@ void TagMode::update() {
     }
 
     if (!mInfo->mIsPlayerIt) {
-        //if (mInvulnTime <= 5) {  
+        if (mInvulnTime <= 5) {  
             if (mainPlayer) {
                 for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
                 {
@@ -156,11 +156,12 @@ void TagMode::update() {
                     }
                 }
             }
-        //} 
+        } 
     }
     else {
             {
-                //if (mInvulnTime <= 5) {
+                if (mInvulnTime <= 5) {
+
                 if (mainPlayer) {
                     for (size_t i = 0; i < mPuppetHolder->getSize(); i++)
                     {
@@ -201,7 +202,7 @@ void TagMode::update() {
                         }
                     }
                 }
-            //}
+            }
         }
         mModeTimer->updateTimer();
     }

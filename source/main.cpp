@@ -97,7 +97,7 @@ void drawMainHook(HakoniwaSequence *curSequence, sead::Viewport *viewport, sead:
     TagInfo* tinf = (TagInfo*)Client::getModeInfo();
     gTextWriter->printf("Is player it (tag): %s\n", tinf->mIsPlayerIt ? "True" : "False");
     TagMode* tmode = Client::getMode<TagMode>();
-    gTextWriter->printf("Is invuln: %s\n", tinf->isInvuln ? "True" : "False");
+    //gTextWriter->printf("Is invuln: %s\n", tinf->isInvuln ? "True" : "False");
     gTextWriter->printf("Invuln Time: %f\n", tmode->getPlayerInvulnTime());
     al::Scene *curScene = curSequence->curScene;
 
