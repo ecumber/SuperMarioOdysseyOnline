@@ -17,3 +17,5 @@ romfs/LayoutData/tagicon/InitMainGroup.byml
 romfs/LayoutData/tagicon/InitExecutor.byml
 romfs/LayoutData/tagicon/InitDebug.byml
 romfs/LayoutData/tagicon/InitAudio.byml
+
+*.code-workspace
