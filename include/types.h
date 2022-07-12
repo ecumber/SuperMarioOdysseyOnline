@@ -18,6 +18,10 @@ typedef signed int          s32;
 typedef int64_t             s64;
 typedef __int128_t          s128;
 
+// bool size is implementation defined, so use these where it's important
+typedef u8                  bool1;
+typedef u32                 bool4;
+
 typedef float               f32;
 typedef double              f64;
 
@@ -76,3 +80,6 @@ struct Rect
 	float right;
 	float top;
 };
+
+#define PACKED __attribute__((packed))
+#define USED __attribute__((used))
