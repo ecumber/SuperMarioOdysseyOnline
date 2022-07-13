@@ -29,7 +29,7 @@ void TagMode::init(const GameModeInitInfo& info) {
 
     if (curGameInfo && curGameInfo->mMode == mMode) {
         mInfo = (TagInfo*)curGameInfo;
-        mModeTimer = new GameModeTimer(mInfo->mTimeLimit);
+        mModeTimer = new GameModeTimer(mInfo->mTimeLimit, false);
     } else {
         sead::system::DeleteImpl(
             curGameInfo);  // attempt to destory previous info before creating new one
@@ -127,7 +127,7 @@ void TagMode::update() {
                                     // if you're not it and you get tagged, play the "bonk" animation
                                     mainPlayer->mPlayerAnimator->endSubAnim();
                                     mainPlayer->mPlayerAnimator->startAnim("DamageLand");
-                                    mModeTimer->disableTimer();
+                                    //mModeTimer->disableTimer();
                                     mModeLayout->showTagged();
 
                                     Client::sendTagInfPacket();
@@ -135,7 +135,7 @@ void TagMode::update() {
                             } else if (PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
 
                                 mInfo->mIsPlayerIt = true;
-                                mModeTimer->disableTimer();
+                                //mModeTimer->disableTimer();
                                 mModeLayout->showTagged();
 
                                 Client::sendTagInfPacket();
@@ -164,7 +164,7 @@ void TagMode::update() {
                                     mainPlayer->mPlayerAnimator->endSubAnim();
                                     mainPlayer->mPlayerAnimator->startAnim("Punch");
                                     
-                                    mModeTimer->disableTimer();
+                                    //mModeTimer->disableTimer();
                                     mModeLayout->showUntagged();
 
                                     Client::sendTagInfPacket();
@@ -172,7 +172,7 @@ void TagMode::update() {
                             } else if (PlayerFunction::isPlayerDeadStatus(mainPlayer)) {
                             
                                 mInfo->mIsPlayerIt = false;
-                                mModeTimer->disableTimer();
+                                //mModeTimer->disableTimer();
                                 mModeLayout->showUntagged();
 
                                 Client::sendTagInfPacket();
@@ -182,8 +182,9 @@ void TagMode::update() {
                     }
                 }
             }
-            mModeTimer->updateTimer();
+            
     }
+    mModeTimer->updateTimer();
     // make sure the invulnerability timer always ticks down until 0
     if (mInvulnTime > 0)
         mInvulnTime -= Time::deltaTime;
@@ -197,11 +198,12 @@ void TagMode::update() {
         if(!mInfo->mIsPlayerIt) {
             mInvulnTime = 0;
             mModeLayout->showUntagged();
-        } else {
+        } 
+        else {
             mModeLayout->showTagged();
         }
 
         Client::sendTagInfPacket();
-        //mInfo->mTimeLimit = mModeTimer->getTime();
-        }  
-    }
+    }  
+    mInfo->mTimeLimit = mModeTimer->getTime();
+}

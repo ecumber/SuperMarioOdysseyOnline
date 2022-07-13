@@ -18,6 +18,11 @@ GameModeTimer::GameModeTimer(GameTime const& time) {
     setTime(time);
 }
 
+GameModeTimer::GameModeTimer(GameTime const& time, bool isCountUp) {
+    mIsCountUp = isCountUp;
+    setTime(time);
+}
+
 GameModeTimer::GameModeTimer() {
     mIsCountUp = true;
     resetTime();

@@ -12,6 +12,7 @@ public:
     GameModeTimer(bool isCountUp, float milli, int seconds, int minutes, int hours); // can set start time or max time, depending on isCountUp
     GameModeTimer(float milli, int seconds, int minutes, int hours);                 // defaults to counting down with a start time
     GameModeTimer(GameTime const& time);                                             // sets timer's current time to time struct argument, defaults to incrementing
+    GameModeTimer(GameTime const& time, bool isCountUp);                             // same as before but allows changing of isCountUp variable
     GameModeTimer();                                                                 // defaults to counting up with zero time
     
     void toggleTimer()  { mIsEnabled = !mIsEnabled; }
